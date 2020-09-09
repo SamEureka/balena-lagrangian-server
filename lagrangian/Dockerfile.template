@@ -1,0 +1,18 @@
+# FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-openjdk:latest-buster
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-openjdk:8-jdk-stretch
+
+ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+
+RUN install_packages git
+
+RUN cd /serverfiles \
+    && git clone https://github.com/SamEureka/lagrangianServer.git \
+    && cd lagrangianServer \
+    && chmod +x Install.sh \
+    && chmod +x ServerStart.sh \
+    && ./Install.sh
+
+
+
+CMD [ "/bin/bash", "/serverfiles/lagrangianServer/ServerStart.sh" ]
